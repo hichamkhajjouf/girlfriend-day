@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
   <!-- ====================== SCHERM 1: DE ENVELOP ====================== -->
@@ -92,20 +92,17 @@
     </header>
 
     <div class="notes-stage">
-      <!-- De stapel -->
-      <button class="note-stack" id="noteStack" aria-label="Tik voor een briefje">
-        <span class="stack-layer l3"></span>
-        <span class="stack-layer l2"></span>
-        <span class="stack-layer l1"></span>
-        <span class="stack-face">
-          <span class="stack-hint">tik voor een briefje</span>
-        </span>
-      </button>
-
-      <!-- Het getoonde briefje -->
-      <div class="note-card" id="noteCard" hidden>
-        <p class="note-text" id="noteText"></p>
-        <button class="btn-primary note-next" id="noteNext">volgende →</button>
+      <!-- De stapel: decoratieve lagen eronder + de actieve kaart bovenop.
+           De pil slinkt zichtbaar; tikken laat het briefje wegvliegen en
+           brengt het volgende meteen omhoog. -->
+      <div class="deck" id="deck">
+        <span class="deck-layer d3"></span>
+        <span class="deck-layer d2"></span>
+        <span class="deck-layer d1"></span>
+        <button class="note-card" id="noteCard" aria-label="Volgende briefje">
+          <span class="note-text" id="noteText"></span>
+          <span class="note-cta" id="noteCta"></span>
+        </button>
       </div>
 
       <!-- Slot -->
@@ -130,6 +127,6 @@
 
   <footer class="credit" id="credit"></footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

@@ -395,86 +395,71 @@ body {
   position: relative;
 }
 
-.note-stack {
+/* De stapel (deck): vaste doos waarin de kaarten liggen */
+.deck {
   position: relative;
-  width: min(74vw, 300px);
-  height: min(74vw, 300px);
-  max-height: 42vh;
-  border: none;
-  background: none;
-  cursor: pointer;
-  transition: transform .16s var(--ease-spring);
+  width: min(80vw, 330px);
+  height: min(62vh, 400px);
 }
-.note-stack:active { transform: scale(.97); }
-.note-stack:disabled { pointer-events: none; }
 
-.stack-layer, .stack-face {
+/* decoratieve lagen die de pil eronder verbeelden */
+.deck-layer {
   position: absolute;
   inset: 0;
   border-radius: 14px;
   background: var(--card);
   border: 1.5px solid var(--line);
-  box-shadow: 0 6px 16px -10px var(--shadow);
+  box-shadow: 0 6px 16px -12px var(--shadow);
+  transition: opacity .3s ease, transform .3s var(--ease-spring);
 }
-.stack-layer.l1 { transform: rotate(-5deg) translateY(2px); background: #fdf4e4; }
-.stack-layer.l2 { transform: rotate(3deg)  translateY(1px); background: #fbf1df; }
-.stack-layer.l3 { transform: rotate(-2deg); background: #f7ecd8; }
-.stack-face {
-  display: grid;
-  place-items: center;
-  background:
-    repeating-linear-gradient(transparent 0 30px, rgba(198,93,67,.08) 30px 31px),
-    var(--card);
-}
-.stack-face::before {  /* rood 'kantlijntje' zoals schrift */
-  content: "";
-  position: absolute;
-  left: 22px; top: 0; bottom: 0;
-  width: 1.5px;
-  background: rgba(198,93,67,.25);
-}
-.stack-hint {
-  font-family: var(--font-hand);
-  font-size: 1.5rem;
-  color: var(--ink-soft);
-  text-align: center;
-  padding: 0 20px;
-}
-.note-stack::after {  /* hartje in de hoek */
-  content: "❤";
-  position: absolute;
-  top: 12px; right: 16px;
-  color: var(--blush);
-  font-size: 1.2rem;
-  z-index: 2;
-}
+.deck-layer.d1 { transform: rotate(-2.5deg) translateY(6px);  background: #fdf4e4; z-index: 3; }
+.deck-layer.d2 { transform: rotate(2deg)    translateY(11px); background: #fbf1df; z-index: 2; }
+.deck-layer.d3 { transform: rotate(-1.4deg) translateY(16px); background: #f7ecd8; z-index: 1; }
 
-/* het getoonde briefje */
+/* hoeveel lagen zichtbaar zijn = hoeveel er nog onder liggen (max 3) */
+.deck.layers-0 .deck-layer,
+.deck.layers-1 .d2, .deck.layers-1 .d3,
+.deck.layers-2 .d3 { opacity: 0; }
+
+/* het getoonde briefje: bovenste kaart, vult de deck-doos */
 .note-card {
-  width: min(80vw, 340px);
-  min-height: min(70vw, 300px);
-  max-height: 52vh;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
   background:
     repeating-linear-gradient(transparent 0 34px, rgba(198,93,67,.08) 34px 35px),
     var(--card);
   border-radius: 14px;
   border: 1.5px solid var(--line);
-  box-shadow: 0 16px 34px -14px var(--shadow);
-  padding: 34px 26px 24px;
+  box-shadow: 0 16px 34px -16px var(--shadow);
+  padding: 30px 24px 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  position: relative;
+  justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  touch-action: manipulation;   /* geen 300ms-tik-vertraging op iOS */
+  color: var(--ink);
 }
-.note-card::before {
+.note-card::before {  /* rode kantlijn */
   content: "";
   position: absolute;
   left: 24px; top: 0; bottom: 0;
   width: 1.5px;
   background: rgba(198,93,67,.28);
 }
+.note-card::after {   /* hartje in de hoek */
+  content: "❤";
+  position: absolute;
+  top: 12px; right: 16px;
+  color: var(--blush);
+  font-size: 1.2rem;
+}
+.note-card:active { transform: scale(.98); }
+
 .note-text {
   font-family: var(--font-hand);
   font-size: clamp(1.7rem, 7vw, 2.1rem);
@@ -484,12 +469,42 @@ body {
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
-.note-card.animate-in { animation: noteIn .55s var(--ease-spring) both; }
-@keyframes noteIn {
-  0%   { opacity: 0; transform: translateY(30px) rotate(-4deg) scale(.9); }
+.note-cta {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .85rem;
+  letter-spacing: .3px;
+  color: var(--accent);
+  background: rgba(198,93,67,.1);
+  padding: 7px 16px;
+  border-radius: 999px;
+}
+.note-card.is-cover .note-text { color: var(--ink-soft); }
+.note-cta:empty { display: none; }   /* geen leeg pilletje op de cover */
+
+/* het volgende briefje komt vanuit de stapel omhoog */
+.note-card.enter { animation: cardEnter .4s var(--ease-spring); }
+@keyframes cardEnter {
+  0%   { opacity: 0; transform: translateY(16px) scale(.94); }
+  60%  { opacity: 1; }
   100% { opacity: 1; transform: none; }
 }
+
+/* het gelezen briefje vliegt weg (losse ghost-kopie, position:fixed) */
+.note-card.is-ghost {
+  z-index: 60;
+  pointer-events: none;
+  animation: cardFly .46s cubic-bezier(.5, .05, .85, .3) forwards;
+}
+@keyframes cardFly {
+  0%   { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-64%) rotate(-9deg) scale(.9); }
+}
+
+/* de laatste kaart faded weg zodat het slot verschijnt */
+.note-card.gone { opacity: 0; transition: opacity .22s ease; }
 
 .note-end { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; animation: fadeUp .5s ease both; }
 .note-end-text {
@@ -512,8 +527,13 @@ body {
 }
 .sound-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* responsief: 2 kolommen op een telefoon, meer op een breed scherm,
+     maar altijd nette tegels van ~150px i.p.v. twee kolossen */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 14px;
+  width: 100%;
+  max-width: 620px;          /* rooster blijft gecentreerd en compact op desktop */
+  margin: 0 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 4px 2px 52px;   /* ruimte onderaan voor de creditregel */
@@ -521,9 +541,9 @@ body {
 }
 .sound-tile {
   position: relative;
-  aspect-ratio: 1 / 1;
-  border: 1.5px solid var(--line);
-  border-radius: 20px;
+  height: 118px;             /* vaste, bescheiden hoogte — rekt niet mee */
+  border: 1.5px solid rgba(67,53,43,.16);
+  border-radius: 18px;
   background: var(--card);
   color: var(--ink);
   cursor: pointer;
@@ -531,19 +551,21 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px;
+  gap: 8px;
+  padding: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 18px -12px var(--shadow);
-  transition: transform .15s var(--ease-spring), box-shadow .2s;
+  /* duidelijke afscheiding: tegel 'ligt' op het papier */
+  box-shadow: 0 3px 10px -4px rgba(67,53,43,.30), inset 0 1px 0 rgba(255,255,255,.6);
+  transition: transform .15s var(--ease-spring), box-shadow .2s, border-color .2s;
   font-family: var(--font-body);
 }
+.sound-tile:hover { box-shadow: 0 6px 16px -6px rgba(67,53,43,.34); border-color: rgba(67,53,43,.24); }
 .sound-tile:active { transform: scale(.95); }
-.tile-icon { font-size: 1.9rem; transition: transform .2s; }
+.tile-icon { font-size: 1.7rem; transition: transform .2s; line-height: 1; }
 .tile-label {
   font-family: var(--font-hand);
-  font-size: 1.35rem;
-  line-height: 1.1;
+  font-size: 1.25rem;
+  line-height: 1.05;
   text-align: center;
   color: var(--ink);
 }

@@ -198,63 +198,108 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =====================================================================
-   *  BRIEFJES  —  elk briefje één keer, tot de stapel op is
+   *  BRIEFJES  —  één doorlopend deck: het gelezen briefje vliegt weg,
+   *  het volgende komt meteen vanuit de stapel omhoog. Elk briefje één
+   *  keer, tot de stapel op is.
    * =================================================================== */
-  let remaining = [];          // nog niet getoonde indexen
-  const stack   = $("#noteStack");
+  const deck    = $("#deck");
   const card    = $("#noteCard");
   const cardTxt = $("#noteText");
+  const cardCta = $("#noteCta");
   const endBox  = $("#noteEnd");
   const counter = $("#notesCounter");
+  const COVER_TEXT = "tik voor een briefje";
+
+  let order = [];   // geschudde volgorde van briefje-indexen
+  let pos   = -1;   // -1 = cover; anders index in 'order' van het getoonde briefje
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
 
   function resetNotes() {
-    remaining = CONFIG.briefjes.map((_, i) => i);
-    // schud voor willekeurige volgorde
-    for (let i = remaining.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
-    }
-    card.hidden = true;
+    order = shuffle(CONFIG.briefjes.map((_, i) => i));
+    pos = -1;
     endBox.hidden = true;
-    stack.hidden = false;
-    stack.disabled = false;
-    updateCounter();
+    deck.hidden = false;
+    card.style.visibility = "";
+    card.classList.remove("gone");
+    renderCard();
+    renderDeck();
   }
 
-  function updateCounter() {
-    const total = CONFIG.briefjes.length;
-    const done = total - remaining.length;
-    counter.textContent = `${done}/${total}`;
-  }
-
-  function drawNote() {
-    if (remaining.length === 0) return;
-    const idx = remaining.pop();
-    cardTxt.textContent = CONFIG.briefjes[idx];
-
-    stack.hidden = true;
-    card.hidden = false;
-    card.classList.remove("animate-in");
-    void card.offsetWidth;            // herstart animatie
-    card.classList.add("animate-in");
-    updateCounter();
-  }
-
-  function nextNote() {
-    if (remaining.length === 0) {
-      // stapel leeg → slot tonen
-      card.hidden = true;
-      stack.hidden = true;
-      endBox.hidden = false;
+  function renderCard() {
+    if (pos < 0) {
+      cardTxt.textContent = COVER_TEXT;
+      cardCta.textContent = "";
+      card.classList.add("is-cover");
     } else {
-      card.hidden = true;
-      stack.hidden = false;
-      stack.disabled = false;
+      cardTxt.textContent = CONFIG.briefjes[order[pos]];
+      cardCta.textContent = pos === order.length - 1 ? "en dan… →" : "volgende →";
+      card.classList.remove("is-cover");
     }
+    // herstart de 'omhoog uit de stapel'-animatie
+    card.classList.remove("enter");
+    void card.offsetWidth;
+    card.classList.add("enter");
   }
 
-  stack.addEventListener("click", drawNote);
-  $("#noteNext").addEventListener("click", nextNote);
+  function renderDeck() {
+    const total = CONFIG.briefjes.length;
+    const shown = pos < 0 ? 0 : pos + 1;
+    counter.textContent = `${shown}/${total}`;
+    // hoeveel briefjes liggen er nog ONDER de bovenste kaart
+    const under = pos < 0 ? total : total - 1 - pos;
+    deck.className = "deck layers-" + Math.min(3, Math.max(0, under));
+  }
+
+  // maak een losse kopie die wegvliegt; ruimt zichzelf op (ook bij snel tikken)
+  function spawnGhost() {
+    const rect = card.getBoundingClientRect();
+    const ghost = card.cloneNode(true);
+    ghost.removeAttribute("id");
+    ghost.classList.remove("enter");
+    ghost.classList.add("is-ghost");
+    ghost.style.position = "fixed";
+    ghost.style.left = rect.left + "px";
+    ghost.style.top = rect.top + "px";
+    ghost.style.width = rect.width + "px";
+    ghost.style.height = rect.height + "px";
+    ghost.style.margin = "0";
+    document.body.appendChild(ghost);
+    const kill = () => ghost.remove();
+    ghost.addEventListener("animationend", kill);
+    setTimeout(kill, 800);   // vangnet
+  }
+
+  function advance() {
+    // al bij het laatste briefje? → laat het wegvliegen en toon het slot
+    if (pos >= order.length - 1) {
+      if (pos >= 0) {
+        spawnGhost();
+        card.classList.add("gone");
+        deck.className = "deck layers-0";
+      }
+      setTimeout(showEnd, pos >= 0 ? 280 : 0);
+      return;
+    }
+    // een gelezen briefje vliegt weg (niet bij de cover)
+    if (pos >= 0) spawnGhost();
+    pos++;
+    renderCard();
+    renderDeck();
+  }
+
+  function showEnd() {
+    deck.hidden = true;
+    endBox.hidden = false;
+  }
+
+  card.addEventListener("click", advance);
   $("#noteRestart").addEventListener("click", resetNotes);
 
   /* =====================================================================
