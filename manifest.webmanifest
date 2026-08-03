@@ -1,7 +1,7 @@
 {
-  "name": "Voor jou ❤️",
-  "short_name": "Voor jou",
-  "description": "Een klein cadeautje, alleen voor jou.",
+  "name": "dounichi v2 ❤️",
+  "short_name": "dounichi v2",
+  "description": "Een klein plekje, alleen voor jou gemaakt.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

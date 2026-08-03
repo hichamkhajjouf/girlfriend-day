@@ -15,6 +15,11 @@
   --line:       rgba(67,53,43,.14);
   --card:       #fffaf1;   /* bijna-wit papier */
   --shadow:     rgba(67,53,43,.22);
+  --rose:       #d6abb2;   /* oudroze — basiskleur van de achtergrond */
+
+  /* frosted 'matglas'-paneel achter losse tekst op de drukke achtergrond */
+  --frost:      rgba(255, 250, 243, .82);
+  --frost-line: rgba(255, 255, 255, .55);
 
   --font-hand: 'Caveat', 'Segoe Print', cursive;
   --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -35,18 +40,32 @@ html, body {
 body {
   font-family: var(--font-body);
   color: var(--ink);
-  background: var(--paper);
-  /* zachte papier-warmte: subtiele vlekken via radiale gradients */
-  background-image:
-    radial-gradient(120% 80% at 15% 0%, #fbf3e5 0%, transparent 55%),
-    radial-gradient(120% 90% at 90% 100%, #f0ddc0 0%, transparent 50%),
-    radial-gradient(60% 60% at 50% 40%, #f9efdd 0%, transparent 70%);
+  /* drukke, kleurrijke achtergrond; oudroze als fallback tijdens laden.
+     'cover' vult zowel een breed als een smal/hoog scherm zonder naden
+     (het patroon herhaalt niet naadloos, dus schalend vullen oogt beter
+     dan tegelen). De tekeningen blijven op elk formaat ~even groot. */
+  background-color: var(--rose);
+  background-image: url("photo/achtergrond.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   min-height: 100dvh;
   overflow: hidden;                 /* app-gevoel: geen pagina-scroll */
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* ---- Matglas-paneel achter tekst die los op de achtergrond staat ------- *
+ * Houdt het patroon zichtbaar (semi-transparant + lichte blur) maar maakt
+ * begroeting, onderschriften, koppen en de creditregel overal leesbaar.   */
+.frost {
+  background: var(--frost);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  backdrop-filter: blur(8px) saturate(1.2);
+  border: 1px solid var(--frost-line);
+  box-shadow: 0 6px 18px -10px var(--shadow);
 }
 
 /* ---- Schermen ---------------------------------------------------------- */
@@ -269,6 +288,9 @@ body {
   font-size: 1.6rem;
   color: var(--ink-soft);
   animation: bob 2.4s ease-in-out infinite;
+  padding: 4px 20px;
+  border-radius: 999px;
+  line-height: 1.3;
 }
 @keyframes bob { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(6px);} }
 .reveal-continue { animation: fadeUp .5s ease both; }
@@ -286,6 +308,16 @@ body {
   text-align: center;
   gap: 8px;
 }
+.hub-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 26px 20px;
+  border-radius: 26px;
+  margin-bottom: 24px;
+  max-width: min(90vw, 420px);
+}
 .hub-kicker {
   font-family: var(--font-body);
   text-transform: uppercase;
@@ -297,16 +329,17 @@ body {
 }
 .hub-title {
   font-family: var(--font-hand);
-  font-size: clamp(2.6rem, 12vw, 3.6rem);
+  font-size: clamp(2.1rem, 9.5vw, 3.1rem);
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.08;
   color: var(--ink);
+  max-width: 14ch;          /* langere groet wrapt netjes naar twee regels */
+  text-wrap: balance;
 }
 .hub-sub {
   font-family: var(--font-hand);
   font-size: 1.45rem;
   color: var(--ink-soft);
-  margin-bottom: 22px;
   max-width: 24ch;
 }
 .hub-cards {
@@ -340,8 +373,10 @@ body {
   margin-top: 26px;
   font-size: .82rem;
   color: var(--ink-soft);
-  max-width: 30ch;
+  max-width: 32ch;
   line-height: 1.5;
+  padding: 12px 18px;
+  border-radius: 16px;
 }
 .a2hs-hint b { color: var(--ink); }
 .ios-share { font-family: -apple-system, sans-serif; }
@@ -371,6 +406,9 @@ body {
   font-family: var(--font-hand);
   font-size: 1.9rem;
   color: var(--ink);
+  padding: 2px 16px;
+  border-radius: 999px;
+  line-height: 1.2;
 }
 .topbar-spacer, .notes-counter { margin-left: auto; }
 .notes-counter {
@@ -378,7 +416,10 @@ body {
   font-weight: 700;
   font-size: .8rem;
   color: var(--accent);
-  background: rgba(198,93,67,.1);
+  background: var(--frost);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  backdrop-filter: blur(8px) saturate(1.2);
+  border: 1px solid var(--frost-line);
   padding: 5px 12px;
   border-radius: 999px;
 }
@@ -512,7 +553,9 @@ body {
   font-size: clamp(1.9rem, 8vw, 2.4rem);
   line-height: 1.3;
   color: var(--ink);
-  max-width: 20ch;
+  max-width: 18ch;
+  padding: 18px 24px;
+  border-radius: 22px;
 }
 
 /* =========================================================================
@@ -523,7 +566,11 @@ body {
   font-size: 1.4rem;
   color: var(--ink-soft);
   text-align: center;
+  align-self: center;         /* pilletje hugt de tekst i.p.v. volle breedte */
   margin: 4px 0 16px;
+  padding: 5px 18px;
+  border-radius: 999px;
+  line-height: 1.25;
 }
 .sound-grid {
   display: grid;
@@ -536,7 +583,7 @@ body {
   margin: 0 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 4px 2px 52px;   /* ruimte onderaan voor de creditregel */
+  padding: 4px 2px 72px;   /* ruimte onderaan voor de (soms 2-regelige) creditregel */
   align-content: start;
 }
 .sound-tile {
@@ -604,15 +651,19 @@ body {
    ========================================================================= */
 .credit {
   position: fixed;
-  bottom: max(env(safe-area-inset-bottom), 8px);
-  left: 0; right: 0;
+  bottom: max(env(safe-area-inset-bottom), 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(90vw, 42ch);   /* langere regel wrapt netjes, blijft van de randen */
   text-align: center;
   font-family: var(--font-hand);
   font-size: 1.05rem;
+  line-height: 1.25;
   color: var(--ink-soft);
-  opacity: .7;
   pointer-events: none;
   z-index: 20;
+  padding: 6px 18px;
+  border-radius: 16px;
 }
 
 /* toegankelijkheid: minder beweging */

@@ -1,5 +1,5 @@
 /* =========================================================================
- *  ❤️  VOOR JOU  —  hier pas je alles aan
+ *  ❤️  DOUNICHI V2  —  hier pas je alles aan
  *  ========================================================================
  *  Alles wat je zelf wilt wijzigen staat in dit CONFIG-blok hieronder.
  *  Je hoeft nergens anders in de code te komen.
@@ -7,13 +7,13 @@
 
 const CONFIG = {
 
-  /* -- De naam van je vriendin (verschijnt in de hub) ------------------- */
-  naam: "Douni",
+  /* -- De begroeting bovenaan de hub ------------------------------------ */
+  begroeting: "Goeiemorgen schoonheid ☀️",
 
   /* -- De envelop-onthulling -------------------------------------------- */
   reveal: {
     // Korte boodschap op het kaartje in de envelop:
-    boodschap: "Vandaag is het International Girlfriend Day — en jij bent de mijne. Klein cadeautje, alleen voor jou. ❤️",
+    boodschap: "Welkom bij dounichi v2, een klein plekje op internet, alleen voor jou gemaakt. Ik hou van jou Douni inu ❤️",
     // Foto van jullie samen. Zet 'm in de map /photo en pas de naam aan.
     // Laat je 'm leeg (""), dan verschijnt er automatisch een hartje.
     foto: "photo/ons.jpg",
@@ -58,11 +58,11 @@ const CONFIG = {
     { label: "Voor het slapen",   file: "audio/slaaplekker.mp3",   icon: "🌙" },
     { label: "Een kusje",         file: "audio/kusje.mp3",         icon: "😘" },
     { label: "Ik hou van je",     file: "audio/ik-hou-van-je.mp3", icon: "❤️" },
-    { label: "Verrassing",        file: "audio/verrassing.mp3",    icon: "🎁" },
+    { label: "Liedje",            file: "audio/verrassing.mp3",    icon: "🎵" },
   ],
 
   /* -- Creditregel onderaan --------------------------------------------- */
-  credit: "met liefde gemaakt door mij, voor jou ❤️",
+  credit: "met liefde gemaakt door hichi, voor zijn allerliefste douni ❤️",
 };
 
 /* =========================================================================
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
    *  Inhoud invullen vanuit CONFIG
    * =================================================================== */
   function hydrate() {
-    $("#hubTitle").textContent = `Hoi ${CONFIG.naam}`;
+    $("#hubTitle").textContent = CONFIG.begroeting;
     $("#hubSub").textContent = CONFIG.hub.ondertitel;
     $("#noteEndText").textContent = CONFIG.briefjesSlot;
     $("#revealMessage").textContent = CONFIG.reveal.boodschap;

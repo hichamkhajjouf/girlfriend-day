@@ -1,6 +1,6 @@
-# Voor jou ❤️
+# dounichi v2 ❤️
 
-Een kleine, statische verrassingswebsite voor International Girlfriend Day.
+Een kleine, statische verrassingswebsite — een cadeautje, alleen voor haar.
 Mobiel-first, voelt als een appje. Geen build-stap, geen framework — alleen
 HTML/CSS/JS en Google Fonts.
 
@@ -8,7 +8,7 @@ HTML/CSS/JS en Google Fonts.
 
 Alles wat je wilt aanpassen staat **bovenin `app.js`** in het `CONFIG`-blok:
 
-- **naam** — de naam van je vriendin
+- **begroeting** — de groet bovenaan de hub
 - **reveal** — de boodschap in de envelop + de polaroid-foto
 - **briefjes** — de lijst met briefjes (elke regel = één briefje)
 - **soundboard** — koppel elk mp3-bestand aan een label
@@ -18,6 +18,8 @@ Alles wat je wilt aanpassen staat **bovenin `app.js`** in het `CONFIG`-blok:
 
 - Polaroid-foto → map `photo/` (standaard `ons.jpg`) — zie `photo/LEES-MIJ.txt`
 - Spraakberichten → map `audio/` (mp3) — zie `audio/LEES-MIJ.txt`
+- Achtergrond → `photo/achtergrond.png` (vult het hele scherm, schaalt mee).
+  Losse tekst staat op een licht "matglas"-paneel zodat het leesbaar blijft.
 
 ## Lokaal bekijken
 
