@@ -1,0 +1,10 @@
+Zet hier de polaroid-foto van jullie samen neer.
+
+Standaard verwacht de site:  ons.jpg
+
+Wil je een andere bestandsnaam? Pas dan "foto" aan in het "reveal"-blok
+bovenin app.js. Laat je 'foto' leeg (""), dan verschijnt er automatisch
+een hartje in plaats van een foto.
+
+De foto wordt vierkant bijgesneden (150x150 weergave), dus een ongeveer
+vierkante uitsnede werkt het mooist.

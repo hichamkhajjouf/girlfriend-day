@@ -1,0 +1,17 @@
+Zet hier je ingesproken mp3-bestanden neer.
+
+De namen moeten overeenkomen met wat in app.js staat (blok "soundboard").
+Standaard verwacht de site deze bestanden:
+
+  goedemorgen.mp3
+  ik-mis-je.mp3
+  slaaplekker.mp3
+  kusje.mp3
+  ik-hou-van-je.mp3
+  verrassing.mp3
+
+Wil je andere labels of bestandsnamen? Pas dan het "soundboard"-lijstje
+bovenin app.js aan. Een tegel waarvan het bestand ontbreekt blijft zichtbaar
+maar wordt gemarkeerd als "(ontbreekt)".
+
+Tip: houd de bestanden klein (mono, ~96 kbps is prima voor spraak).

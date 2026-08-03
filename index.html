@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <title>Voor jou ❤️</title>
+  <meta name="description" content="Een klein cadeautje, alleen voor jou." />
+
+  <!-- Hart-favicon (inline SVG, geen externe bestanden nodig) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9D%A4%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+
+  <!-- Beginscherm-icoon voor iPhone -->
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- iOS: als 'app' openen vanaf beginscherm -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Voor jou" />
+  <meta name="theme-color" content="#f3e6d4" />
+
+  <!-- Google Fonts (enige externe afhankelijkheid) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ====================== SCHERM 1: DE ENVELOP ====================== -->
+  <section id="screen-reveal" class="screen is-active" aria-label="Envelop">
+    <div class="reveal-stage">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Tik om te openen">
+        <div class="env-shadow"></div>
+        <div class="env-back"></div>
+
+        <!-- De kaart die uit de envelop komt -->
+        <div class="env-card" id="envCard">
+          <div class="polaroid">
+            <div class="polaroid-photo">
+              <img id="revealPhoto" alt="Wij" />
+              <div class="polaroid-fallback" aria-hidden="true">❤️</div>
+            </div>
+            <p class="polaroid-caption" id="polaroidCaption">wij</p>
+          </div>
+          <p class="env-card-text" id="revealMessage"></p>
+        </div>
+
+        <div class="env-front"></div>
+        <div class="env-flap"></div>
+        <div class="env-heart">❤</div>
+      </div>
+
+      <p class="reveal-hint" id="revealHint">tik op de envelop</p>
+      <button class="btn-primary reveal-continue" id="revealContinue" hidden>naar binnen →</button>
+    </div>
+  </section>
+
+  <!-- ====================== SCHERM 2: DE HUB ====================== -->
+  <section id="screen-hub" class="screen" aria-label="Hub">
+    <div class="hub-inner">
+      <p class="hub-kicker">international girlfriend day</p>
+      <h1 class="hub-title" id="hubTitle"></h1>
+      <p class="hub-sub" id="hubSub"></p>
+
+      <div class="hub-cards">
+        <button class="hub-card" data-goto="screen-notes">
+          <span class="hub-card-emoji">💌</span>
+          <span class="hub-card-label">Briefjes</span>
+          <span class="hub-card-desc">kleine woordjes voor jou</span>
+        </button>
+        <button class="hub-card" data-goto="screen-sound">
+          <span class="hub-card-emoji">🎙️</span>
+          <span class="hub-card-label">Mijn stem</span>
+          <span class="hub-card-desc">tik en hoor me</span>
+        </button>
+      </div>
+
+      <p class="a2hs-hint" id="a2hsHint" hidden>
+        Tip: tik op <span class="ios-share">􀈂</span> en dan <b>“Zet op beginscherm”</b> om dit als appje te bewaren.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================== SCHERM 3: BRIEFJES ====================== -->
+  <section id="screen-notes" class="screen" aria-label="Briefjes">
+    <header class="topbar">
+      <button class="btn-back" data-goto="screen-hub" aria-label="Terug">←</button>
+      <span class="topbar-title">Briefjes</span>
+      <span class="notes-counter" id="notesCounter"></span>
+    </header>
+
+    <div class="notes-stage">
+      <!-- De stapel -->
+      <button class="note-stack" id="noteStack" aria-label="Tik voor een briefje">
+        <span class="stack-layer l3"></span>
+        <span class="stack-layer l2"></span>
+        <span class="stack-layer l1"></span>
+        <span class="stack-face">
+          <span class="stack-hint">tik voor een briefje</span>
+        </span>
+      </button>
+
+      <!-- Het getoonde briefje -->
+      <div class="note-card" id="noteCard" hidden>
+        <p class="note-text" id="noteText"></p>
+        <button class="btn-primary note-next" id="noteNext">volgende →</button>
+      </div>
+
+      <!-- Slot -->
+      <div class="note-end" id="noteEnd" hidden>
+        <p class="note-end-text" id="noteEndText"></p>
+        <button class="btn-primary" id="noteRestart">opnieuw beginnen ↺</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== SCHERM 4: SOUNDBOARD ====================== -->
+  <section id="screen-sound" class="screen" aria-label="Stemberichten">
+    <header class="topbar">
+      <button class="btn-back" data-goto="screen-hub" aria-label="Terug">←</button>
+      <span class="topbar-title">Mijn stem</span>
+      <span class="topbar-spacer"></span>
+    </header>
+
+    <p class="sound-intro" id="soundIntro"></p>
+    <div class="sound-grid" id="soundGrid"></div>
+  </section>
+
+  <footer class="credit" id="credit"></footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
