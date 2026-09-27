@@ -32,7 +32,7 @@ const CONFIG = {
   briefjes: [
     "Lach, want je hebt de mooiste lach van de hele wereld ❤️",
     "I love your titties cause I can focus on two things at once (of niet eigenlijk)",
-    "Als je dit leest, weet dat ik aan je denk ❤️",
+    "Als je dit leest, weet dat ik aan je denk ️❤️",
     "Je bent de liefste persoon die ik ooit heb ontmoet ❤️",
     "Je bent zo prachtig Douni, je hebt echt geen idee ❤️",
     "Ik hou van jou prinsesje ❤️",
@@ -43,6 +43,19 @@ const CONFIG = {
     "Smeer je in als het warm is ❤️",
     "Stay hydrated ❤️",
     "Ik ben altijd bij je, ook nu ❤️",
+    "Mijn liefde voor jou gaat nog dieper dan het diepste punt van de oceaan ❤️",
+    "Als ik een kat was, zou ik van je houden met al mijn 9 levens ❤️",
+    "Het begint weer koud te worden Douni, kleed je goed aan ❤️",
+    "Ik waardeer jou ❤️",
+    "Ik mis jou ❤️",
+    "Dit berichtje is met heeeeel veeel liefde voor jou geschreven ❤️",
+    "Mijn lieve Douni is klein, maar de allerfijnste ❤️",
+    "Mijn favoriete plek is bij jou ❤️",
+    "Ik ben altijd megatrots op jou ❤️",
+    "10/10 would fall in love with you again ❤️",
+    "Ik ben nog steeds vet verliefd op jou ❤️",
+    "Douni als ik een auto was, was jij mijn benzine ❤️",
+    "Jouw naam op mijn telefoon zien verschijnen is genoeg om mijn dag ineens weer goed te maken als het minder gaat ❤️",
   ],
 
   // Bericht als alle briefjes gelezen zijn:
