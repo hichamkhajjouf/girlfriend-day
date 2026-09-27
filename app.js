@@ -72,6 +72,11 @@ const CONFIG = {
     { label: "Een kusje",         file: "audio/kusje.mp3",         icon: "😘" },
     { label: "Ik hou van je",     file: "audio/ik-hou-van-je.mp3", icon: "❤️" },
     { label: "Liedje",            file: "audio/verrassing.mp3",    icon: "🎵" },
+    { label: "Oh lieverd",        file: "audio/ohlieverd.mp3",     icon: "💖" },
+    { label: "Douniiii",          file: "audio/dounii.mp3",        icon: "🦥" },
+    { label: "Gedichtje",         file: "audio/gedichtje.mp3",     icon: "💌" },
+    { label: "Donut",             file: "audio/maan.mp3",          icon: "🍩" },
+    { label: "Dankjewel",         file: "audio/thanks.mp3",        icon: "🫶" },
   ],
 
   /* -- Creditregel onderaan --------------------------------------------- */
